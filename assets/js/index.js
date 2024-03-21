@@ -14,7 +14,6 @@ fetch('https://api.themoviedb.org/3/trending/movie/week?language=en-US&page=1', 
         let num = 0;
         response.results.forEach(element => {
             num++;
-            console.log(num);
             const title = element.title;
             const img = $('<img>').attr('src', 'https://image.tmdb.org/t/p/w500' + element.backdrop_path).addClass('image-item');
             const imageTitle = $('<a>').attr('href', 'info-film.php?id=' + element.id).addClass('text-overlay').text(`${num}. ${title}`);
@@ -75,14 +74,14 @@ fetch('https://api.themoviedb.org/3/trending/tv/week?language=en-US&page=1', opt
     .then(response => response.json())
     .then(response => {
         let numTv = 0;
+        console.log(response);
         response.results.forEach(element => {
             numTv++;
-            console.log(num);
-            const title = element.title;
+            const title = element.name;
             const img = $('<img>').attr('src', 'https://image.tmdb.org/t/p/w500' + element.backdrop_path).addClass('image-item');
-            const imageTitle = $('<a>').attr('href', 'info-film.php?id=' + element.id).addClass('text-overlay').text(`${numTv}. ${title}`);
+            const imageTitleTv = $('<a>').attr('href', 'info-serie.php?id=' + element.id).addClass('text-overlay').text(`${numTv}. ${title}`);
             const slideNumberTv = $('<div>').addClass('slide-number').text(`${numTv}/20`);
-            const container = $('<div>').addClass('image-container').append(slideNumberTv, img, imageTitle);
+            const container = $('<div>').addClass('image-container').append(slideNumberTv, img, imageTitleTv);
             $('#titlesTv').append(container);
         });
 
@@ -96,36 +95,37 @@ fetch('https://api.themoviedb.org/3/trending/tv/week?language=en-US&page=1', opt
     })
     .catch(err => console.error(err));
 
-    let containerIndexTv = 0;
-    // showSlide(containerIndex);
-    
-    function plusSlideTv() {
-        showSlide(containerIndexTv += 1);
-        console.log(containerIndexTv);
+let containerIndexTv = 0;
+
+function plusSlideTv() {
+    showSlideTv(containerIndexTv += 1);
+    console.log(containerIndexTv);
+}
+
+function minusSlideTv() {
+    showSlideTv(containerIndexTv -= 1);
+    console.log(containerIndexTv);
+}
+
+function showSlideTv(n) {
+    const slidesTv = titlesDivTv.children;
+
+    if (n >= slidesTv.length) {
+        containerIndexTv = 0;
+    } else if (n < 0) {
+        containerIndexTv = slidesTv.length - 1;
     }
-    
-    function minusSlideTv() {
-        showSlide(containerIndexTv -= 1);
-        console.log(containerIndexTv);
+
+    for (let i = 0; i < slidesTv.length; i++) {
+        slidesTv[i].style.display = "none";
     }
-    
-    function showSlideTv(n) {
-        const slidesTv = titlesDivTv.children;
-    
-        if (n >= slidesTv.length) {
-            containerIndexTv = 0;
-        } else if (n < 0) {
-            containerIndexTv = slidesTv.lengthTv - 1;
-        }
-    
-        for (let i = 0; i < slidesTv.length; i++) {
-            slidesTv[i].style.display = "none";
-        }
-    
-        slidesTv[containerIndex].style.display = "block";
-    }
-    document.getElementById("nextTv").addEventListener("click", plusSlideTv);
-    document.getElementById("prevTv").addEventListener("click", minusSlideTv);
+
+    slidesTv[containerIndexTv].style.display = "block";
+}
+
+document.getElementById("nextTv").addEventListener("click", plusSlideTv);
+document.getElementById("prevTv").addEventListener("click", minusSlideTv);
+
 
 function getRandomColor() {
     // Generate random RGB values
