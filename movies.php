@@ -15,19 +15,33 @@ session_start();
 
 <body>
     <header>
+        <h1>Films</h1>
         <a href="index.php" class="linksHeader">Home</a>
-        <?php if (!isset($_SESSION['user'])) {
+        <?php if (!isset ($_SESSION['user'])) {
             echo
                 '<a href="register.php" class="linksHeader">Register</a>
                 <a href="login.php" class="linksHeader">Login</a>';
         } else {
             $user = $_SESSION['user'];
             $first = substr($user, 0, 1);
-            echo '<a href="user.php" id="hoverLink"class="aHeader">'.$first."</a>";
+            echo '<a href="user.php" id="hoverLink"class="aHeader">' . $first . "</a>";
             echo '<div id="linkDiv" class="linkDiv">Profile</div>';
         }
         ?>
     </header>
+    <div class="buttons">
+        <button id="popular">Popular</button>
+        <button id="now_playing">Now playing</button>
+        <button id="upcoming">Upcoming</button>
+        <button id="top_rated">Top rated</button>
+    </div>
+    <h1 id="contentTitle" class="h1Title"></h1>
+    <div id="content" class="movies"></div>
+    <div class="buttonsPage">
+        <button id="minus">Moins</button>
+        <p id="actualPage"></p>
+        <button id="plus">Plus</button>
+    </div>
     <script src="./assets/js/movies.js"></script>
     <script src="./assets/js/1.js"></script>
     <script src="./assets/js/2.js"></script>
